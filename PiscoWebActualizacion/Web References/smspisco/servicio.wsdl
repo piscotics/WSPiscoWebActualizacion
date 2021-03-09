@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="urn:miserviciowsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="urn:miserviciowsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="urn:miserviciowsdl">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="EnviarSMSRequest">
+    <wsdl:part name="phone" type="xsd:string" />
+    <wsdl:part name="message" type="xsd:string" />
+    <wsdl:part name="apiclave" type="xsd:string" />
+    <wsdl:part name="apisecret" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="EnviarSMSResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="ConsultarCupoRequest">
+    <wsdl:part name="apiclave" type="xsd:string" />
+    <wsdl:part name="apisecret" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="ConsultarCupoResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:portType name="SigmaSMSPortType">
+    <wsdl:operation name="EnviarSMS">
+      <wsdl:input message="tns:EnviarSMSRequest" />
+      <wsdl:output message="tns:EnviarSMSResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultarCupo">
+      <wsdl:input message="tns:ConsultarCupoRequest" />
+      <wsdl:output message="tns:ConsultarCupoResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SigmaSMSBinding" type="tns:SigmaSMSPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="EnviarSMS">
+      <soap:operation soapAction="http://sms.piscotics.com/WebServiceSigmaSMS/servicio.php/EnviarSMS" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:miserviciowsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:miserviciowsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultarCupo">
+      <soap:operation soapAction="http://sms.piscotics.com/WebServiceSigmaSMS/servicio.php/ConsultarCupo" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:miserviciowsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:miserviciowsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SigmaSMS">
+    <wsdl:port name="SigmaSMSPort" binding="tns:SigmaSMSBinding">
+      <soap:address location="http://sms.piscotics.com:9040/WebServiceSigmaSMS/servicio.php" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
