@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.Description;
@@ -29,6 +30,9 @@ namespace PiscoWebActualizacion.Controllers
         AdasysConnection _ConectUsuario;
         AdasysConnection _ConectRegistros;
         AdasysConnection _ConectRegistrosCount;
+        AdasysConnection _ConectTitular;
+
+
 
         public IHttpActionResult  EchoPing()
         {
@@ -230,69 +234,59 @@ namespace PiscoWebActualizacion.Controllers
 
             int fila = 0;
             bool encontro = false;
-            DateTime fechatitular;
-            _Conect = new AdasysConnection();
-            _Conect.FbConeccionPrincipal();
-            _Conect.StProcedure("P_DOMINIOACTUALIZACION");
-            _Conect.StParameters("cedula", dominio);
-            _Conect.ExecuteProcedure();
+            _ConectTitular = new AdasysConnection();
+            _ConectTitular.FbConeccionPrincipal();
+            _ConectTitular.StProcedure("P_ACTUALIZACIONDOMINIO");
+            _ConectTitular.StParameters("dominio", dominio);
+            _ConectTitular.ExecuteProcedure();
 
             Principal[] objPrincipal = new Principal[1];
-            if (_Conect.DataReader.Read())
+            if (_ConectTitular.DataReader.Read())
             {
 
                 objPrincipal[fila] = new Principal();
 
 
-                if (_Conect.DataReader["SUBDOMINIO"].ToString() != "")
+                if (_ConectTitular.DataReader["IDENTIFICACION"].ToString() != "")
                 {
                     encontro = true;
+                    objPrincipal[fila].Estado = "1";
                 }
                 else
                 {
                     encontro = false;
+                    objPrincipal[fila].Estado = "0";
                 }
 
+                objPrincipal[fila].Identificacion = _ConectTitular.DataReader["IDENTIFICACION"].ToString();
 
+                objPrincipal[fila].RutaBd = _ConectTitular.DataReader["RUTABD"].ToString();
 
-                //objPrincipal[fila].Cedula = _Conect.DataReader["IDPERSONA"].ToString();
-                //objPrincipal[fila].Nombre1 = _Conect.DataReader["Nombres"].ToString();
-                //objTitulares[fila].Nombre2 = _Conect.DataReader["Nombre2"].ToString();
-                //objTitulares[fila].Apellido1 = _Conect.DataReader["Apellidos"].ToString();
-                //objTitulares[fila].Apellido2 = _Conect.DataReader["Apellido2"].ToString();
-                //objTitulares[fila].Direccion = _Conect.DataReader["DIRECCION"].ToString();
-                //objTitulares[fila].Departamento = _Conect.DataReader["DEPTO"].ToString();
-                //objTitulares[fila].Ciudad = _Conect.DataReader["Ciudad"].ToString();
-                //objTitulares[fila].Barrio = _Conect.DataReader["BOXCONTRA"].ToString();
-                //objTitulares[fila].Telefono = _Conect.DataReader["Telefono"].ToString();
-                //objTitulares[fila].Telefamiliar = _Conect.DataReader["CELULAR"].ToString();
-                //objTitulares[fila].Email = _Conect.DataReader["PARENTES"].ToString();
-                //string fnacimiento = _Conect.DataReader["FNACIMIENTO"].ToString();
-                //if (fnacimiento != "")
-                //{
-                //    fechatitular = Convert.ToDateTime(fnacimiento);
-                //    objTitulares[fila].FechaNacimiento = fechatitular.ToString("yyyy-MM-dd");
-                //}
-                //objTitulares[fila].Estado = _Conect.DataReader["Estado"].ToString();
+                objPrincipal[fila].Ip = _ConectTitular.DataReader["IP"].ToString();
 
-                //fila = fila + 1;
+                _ConectTitular.MultiConsulta(objPrincipal[fila].Ip + ":" + objPrincipal[fila].RutaBd);
+
+                HttpContext.Current.Session["RutaBD"] = objPrincipal[fila].Ip + ":" + objPrincipal[fila].RutaBd;
+                
+                // _Conect.StrCadena1 = objPrincipal[fila].Ip +":"+ objPrincipal[fila].RutaBd;
+
             }
             else
             {
                 encontro = false;
             }
-            //if (encontro == true)
-            //{
-            //    return Json(objTitulares);
-            //}
-            //else
-            //{
+            if (encontro == true)
+            {
+                return Json(objPrincipal);
+            }
+            else
+            {
 
-            //    JavaScriptSerializer json_serializer = new JavaScriptSerializer();
-            //    return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Sin Datos\" }]"));
+                JavaScriptSerializer json_serializer = new JavaScriptSerializer();
+                return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Sin Datos\" }]"));
 
-            //}
-            return null;
+            }
+           
         }
 
 

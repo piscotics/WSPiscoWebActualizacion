@@ -16,6 +16,8 @@ namespace PiscoWebActualizacion.App_Code
         private string StrCadena;
         // private FbCommand comando;
 
+        public string strBaseConsulta { get; set; }
+
         public string StrCadena1
         {
             get { return StrCadena; }
@@ -36,18 +38,24 @@ namespace PiscoWebActualizacion.App_Code
             get { return _DataReader; }
             set { _DataReader = value; }
         }
+
+        public void MultiConsulta(string BaseConsulta)
+        {
+            strBaseConsulta = BaseConsulta;
+
+        }
+
         public void FbConeccion()
         {
             _Conect = new FbConnection();
-          //  _Conect.ConnectionString = "User=SYSDBA;password=masterkey;DataSource=localhost;Database=BDPISCO;Charset=NONE;Dialect=3;Max Pool Size=1024;";
-          //_Conect.ConnectionString = "User=SYSDBA;password=masterkey;DataSource=localhost;Database=190.85.119.106:D:\\AdaSysDatos\\FUNERARIAS.FDB;Charset=NONE;Dialect=3;Max Pool Size=1024;";
-           _Conect.ConnectionString = "User=SYSDBA;password=masterkey;DataSource=localhost;port=3050;Database=190.85.119.106:D:\\AdaSysDatos\\FUNERARIAS.FDB;Charset=NONE;Dialect=3;Max Pool Size=1024;";
+         _Conect.ConnectionString = "User=SYSDBA;password=masterkey;DataSource=localhost;port=3050;Database="+ HttpContext.Current.Session["RutaBD"].ToString() + ";Charset=NONE;Dialect=3;Max Pool Size=1024;";
+        //    _Conect.ConnectionString = "User=SYSDBA;password=masterkey;DataSource=localhost;port=3050;Database=190.85.119.106:D:\\AdaSysDatos\\FUNERARIAS.FDB;Charset=NONE;Dialect=3;Max Pool Size=1024;";
         }
 
         public void FbConeccionPrincipal()
         {
             _Conect = new FbConnection();
-             _Conect.ConnectionString = "User=SYSDBA;password=masterkey;DataSource=localhost;Database=BDPISCO;Charset=NONE;Dialect=3;Max Pool Size=1024;";
+             _Conect.ConnectionString = "User=SYSDBA;password=masterkey;DataSource=localhost;port=3050;Database=181.129.170.198:BDCrmPtics;Charset=NONE;Dialect=3;Max Pool Size=1024;";
             //_Conect.ConnectionString = "User=SYSDBA;password=masterkey;DataSource=localhost;Database=190.85.119.106:D:\\AdaSysDatos\\FUNERARIAS.FDB;Charset=NONE;Dialect=3;Max Pool Size=1024;";
            // _Conect.ConnectionString = "User=SYSDBA;password=masterkey;DataSource=localhost;port=3050;Database=190.85.119.106:D:\\AdaSysDatos\\FUNERARIAS.FDB;Charset=NONE;Dialect=3;Max Pool Size=1024;";
         }
