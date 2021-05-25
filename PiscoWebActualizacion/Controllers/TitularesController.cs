@@ -26,6 +26,7 @@ namespace PiscoWebActualizacion.Controllers
     {
         private Response response;
         AdasysConnection _Conect;
+        AdasysConnection _ConectBeneficiarios;
         AdasysConnection _ConectUbicacion;
         AdasysConnection _ConectUsuario;
         AdasysConnection _ConectRegistros;
@@ -51,7 +52,7 @@ namespace PiscoWebActualizacion.Controllers
             int fila = 0;
             bool encontro = false;
             _Conect = new AdasysConnection();
-            _Conect.FbConeccion();
+            _Conect.FbConeccion("");
             _Conect.StProcedure("P_TITULARESPARAMETROS");
             _Conect.StParameters("dato", dato);
             _Conect.StParameters("departamento", departamento);
@@ -91,7 +92,7 @@ namespace PiscoWebActualizacion.Controllers
             {
 
                 _ConectUbicacion = new AdasysConnection();
-                _ConectUbicacion.FbConeccion();
+                _ConectUbicacion.FbConeccion("");
                 _ConectUbicacion.StProcedure("P_TITULARESPARAMETROS");
                 _ConectUbicacion.StParameters("dato", dato);
                 _ConectUbicacion.StParameters("departamento", departamento);
@@ -122,7 +123,7 @@ namespace PiscoWebActualizacion.Controllers
             {
 
                 _ConectUsuario = new AdasysConnection();
-                _ConectUsuario.FbConeccion();
+                _ConectUsuario.FbConeccion("");
                 _ConectUsuario.StProcedure("P_USUARIOSACTUALIZACION");
                 _ConectUsuario.StParameters("usuario", "");
                 _ConectUsuario.StParameters("passwordusuario", "");
@@ -148,7 +149,7 @@ namespace PiscoWebActualizacion.Controllers
 
         [HttpGet]
         [Route("GetTitulares")]
-        public IHttpActionResult Get(string cedula)
+        public IHttpActionResult Get(string cedula, string rutaBd)
         {
             if (cedula == "")
             {
@@ -159,7 +160,7 @@ namespace PiscoWebActualizacion.Controllers
             bool encontro = false;
             DateTime fechatitular;
             _Conect = new AdasysConnection();
-            _Conect.FbConeccion();
+            _Conect.FbConeccion(rutaBd);
             _Conect.StProcedure("P_TITULARESACTUALIZACION");
             _Conect.StParameters("cedula", cedula);
             _Conect.ExecuteProcedure();
@@ -182,6 +183,7 @@ namespace PiscoWebActualizacion.Controllers
                 
 
                
+                objTitulares[fila].Contrato = _Conect.DataReader["IDContrato"].ToString();
                 objTitulares[fila].Cedula = _Conect.DataReader["IDPERSONA"].ToString();
                 objTitulares[fila].Nombre1 = _Conect.DataReader["Nombres"].ToString();
                 objTitulares[fila].Nombre2 = _Conect.DataReader["Nombre2"].ToString();
@@ -266,7 +268,7 @@ namespace PiscoWebActualizacion.Controllers
 
                 _ConectTitular.MultiConsulta(objPrincipal[fila].Ip + ":" + objPrincipal[fila].RutaBd);
 
-                HttpContext.Current.Session["RutaBD"] = objPrincipal[fila].Ip + ":" + objPrincipal[fila].RutaBd;
+               // HttpContext.Current.Session["RutaBD"] = objPrincipal[fila].Ip + ":" + objPrincipal[fila].RutaBd;
                 
                 // _Conect.StrCadena1 = objPrincipal[fila].Ip +":"+ objPrincipal[fila].RutaBd;
 
@@ -292,7 +294,7 @@ namespace PiscoWebActualizacion.Controllers
 
         [HttpGet]
         [Route("GetUsuario")]
-        public IHttpActionResult GetUsuario(string usuario, string passwordusuario)
+        public IHttpActionResult GetUsuario(string usuario, string passwordusuario, string rutaBd)
         {
             if (usuario == "" && passwordusuario =="")
             {
@@ -303,7 +305,7 @@ namespace PiscoWebActualizacion.Controllers
             bool encontro = false;
             DateTime fechatitular;
             _Conect = new AdasysConnection();
-            _Conect.FbConeccion();
+            _Conect.FbConeccion(rutaBd);
             _Conect.StProcedure("P_USUARIOSACTUALIZACION");
             _Conect.StParameters("usuario", usuario);
             _Conect.StParameters("passwordusuario", passwordusuario);
@@ -380,7 +382,7 @@ namespace PiscoWebActualizacion.Controllers
             bool encontro = false;
             DateTime fechatitular;
             _Conect = new AdasysConnection();
-            _Conect.FbConeccion();
+            _Conect.FbConeccion("");
             _Conect.StProcedure("P_USUARIOSACTUALIZACION");
             _Conect.StParameters("usuario", "");
             _Conect.StParameters("passwordusuario", "");
@@ -459,7 +461,7 @@ namespace PiscoWebActualizacion.Controllers
             DateTime fechatitular;
 
             _ConectRegistros = new AdasysConnection();
-            _ConectRegistros.FbConeccion();
+            _ConectRegistros.FbConeccion("");
             _ConectRegistros.StProcedure("P_REGISTROSACTUALIZACION");
             
             if (fechadesde != null)
@@ -630,7 +632,7 @@ namespace PiscoWebActualizacion.Controllers
                 DateTime fechatitular;
 
                 _ConectRegistrosCount = new AdasysConnection();
-                _ConectRegistrosCount.FbConeccion();
+                _ConectRegistrosCount.FbConeccion("");
                 _ConectRegistrosCount.StProcedure("P_REGISTROSACTUALIZACION");
 
                 if (fechadesde != null)
@@ -716,7 +718,7 @@ namespace PiscoWebActualizacion.Controllers
 
                 _Conect = new AdasysConnection();
 
-                _Conect.FbConeccion();
+                _Conect.FbConeccion("");
 
                 _Conect.StProcedure("P_TITULARESGUARDAR");
 
@@ -815,7 +817,7 @@ namespace PiscoWebActualizacion.Controllers
 
                 _Conect = new AdasysConnection();
 
-                _Conect.FbConeccion();
+                _Conect.FbConeccion("");
 
                 _Conect.StProcedure("P_ACTUALIZARCAMBICLAVE");
 
@@ -867,7 +869,7 @@ namespace PiscoWebActualizacion.Controllers
 
                 _Conect = new AdasysConnection();
 
-                _Conect.FbConeccion();
+                _Conect.FbConeccion("");
 
                 _Conect.StProcedure("P_TITULARESACTUALIZAR");
 
@@ -891,6 +893,218 @@ namespace PiscoWebActualizacion.Controllers
                     //return Json("Error Al Almacenar");
                     JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                     return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Error Al Actualizar " + ex + "\" }]"));
+                }
+
+
+
+            }
+            else
+            {
+                JavaScriptSerializer json_serializer = new JavaScriptSerializer();
+                return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Complete Los Datos Obligatorios\" }]"));
+                //return Json("Complete Los Datos Obligatorios");
+            }
+        }
+
+        //trae los beneficiarios
+        [HttpGet]
+        [Route("GetBeneficiarios")]
+        public IHttpActionResult GetBeneficiarios(string cedula, string contrato)
+        {
+            if (cedula == "")
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+
+            int fila = 0;
+            bool encontro = false;
+            DateTime fechatitular;
+            _Conect = new AdasysConnection();
+            _Conect.FbConeccion("");
+            _Conect.StProcedure("P_ACTUALIZACIONBENEFICIARIO"); //
+            _Conect.StParameters("cedula", cedula);
+            _Conect.StParameters("contrato", contrato);
+            _Conect.ExecuteProcedure();
+
+            int cantidad = cantidadRegistrosBeneficiarios(cedula, contrato);
+
+            Beneficiarios[] objBeneficiarios = new Beneficiarios[cantidad];
+            while (_Conect.DataReader.Read())
+            {
+
+                objBeneficiarios[fila] = new Beneficiarios();
+
+
+                if (_Conect.DataReader["IDPERSONA"].ToString() != "")
+                {
+                    encontro = true;
+                }
+                else
+                {
+                    encontro = false;
+                }
+
+
+
+                objBeneficiarios[fila].Cedula = _Conect.DataReader["IDPERSONA"].ToString();
+                objBeneficiarios[fila].Nombre1 = _Conect.DataReader["Nombres"].ToString();
+                objBeneficiarios[fila].Nombre2 = _Conect.DataReader["Nombre2"].ToString();
+                objBeneficiarios[fila].Apellido1 = _Conect.DataReader["Apellidos"].ToString();
+                objBeneficiarios[fila].Apellido2 = _Conect.DataReader["Apellido2"].ToString();
+                objBeneficiarios[fila].Direccion = _Conect.DataReader["DIRECCION"].ToString();
+                objBeneficiarios[fila].Departamento = _Conect.DataReader["DEPTO"].ToString();
+                objBeneficiarios[fila].Ciudad = _Conect.DataReader["Ciudad"].ToString();
+                objBeneficiarios[fila].Barrio = _Conect.DataReader["BOXCONTRA"].ToString();
+                objBeneficiarios[fila].Telefono = _Conect.DataReader["Telefono"].ToString();
+                objBeneficiarios[fila].Telefamiliar = _Conect.DataReader["CELULAR"].ToString();
+                objBeneficiarios[fila].Email = _Conect.DataReader["PARENTES"].ToString();
+                objBeneficiarios[fila].Tipo = _Conect.DataReader["Tipo"].ToString();
+                string fnacimiento = _Conect.DataReader["FNACIMIENTO"].ToString();
+                if (fnacimiento != "")
+                {
+                    fechatitular = Convert.ToDateTime(fnacimiento);
+                    objBeneficiarios[fila].FechaNacimiento = fechatitular.ToString("yyyy-MM-dd");
+                }
+                objBeneficiarios[fila].Estado = _Conect.DataReader["Estado"].ToString();
+
+                fila = fila + 1;
+            }
+           
+            if (encontro == true)
+            {
+                return Json(objBeneficiarios);
+            }
+            else
+            {
+
+                JavaScriptSerializer json_serializer = new JavaScriptSerializer();
+                return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Sin Datos\" }]"));
+
+            }
+            // return Json(objTitulares);
+        }
+
+        private int cantidadRegistrosBeneficiarios(string cedula, string contrato)
+        {
+            int cantidad = 0;
+            if (cedula == "")
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+            try
+            {
+               
+                _ConectBeneficiarios = new AdasysConnection();
+                _ConectBeneficiarios.FbConeccion("");
+                _ConectBeneficiarios.StProcedure("P_ACTUALIZACIONBENEFICIARIO"); //
+                _ConectBeneficiarios.StParameters("cedula", cedula);
+                _ConectBeneficiarios.StParameters("contrato", contrato);
+                _ConectBeneficiarios.ExecuteProcedure();
+
+
+                while (_ConectBeneficiarios.DataReader.Read())
+                {
+                    cantidad = cantidad + 1;
+
+                }
+            }
+            catch (Exception e)
+            {
+                _ConectBeneficiarios.Conect.Close();
+                string x = e.ToString();
+            }
+            return cantidad;
+
+
+        }
+
+
+        //actualiza los beneficiarios
+        //guarda la informacion de los beneficiarios
+        [HttpPost]
+        [ResponseType(typeof(Beneficiarios))]
+        [Route("SetBeneficiarios")]
+        public async Task<IHttpActionResult> Post([FromBody] Beneficiarios checkOut)
+        {
+            DateTime fechatitular;
+
+            if (checkOut.Cedula != "")
+            {
+
+                _Conect = new AdasysConnection();
+
+                _Conect.FbConeccion("");
+
+                _Conect.StProcedure("P_BENEFICIARIOSGUARDAR"); //P_TITULARESGUARDAR
+
+                _Conect.StParameters("idpersona", checkOut.Cedula);
+
+                _Conect.StParameters("nombres", checkOut.Nombre1);
+
+                _Conect.StParameters("nombre2", checkOut.Nombre2);
+
+                _Conect.StParameters("apellidos", checkOut.Apellido1);// usada cuando se ingresa el numero de recibo
+
+                _Conect.StParameters("apellido2", checkOut.Apellido2);
+
+                _Conect.StParameters("telefono", checkOut.Telefono);
+
+                _Conect.StParameters("telefamiliar", checkOut.Telefamiliar);
+
+                _Conect.StParameters("direccion", checkOut.Direccion);
+
+                _Conect.StParameters("departamento", checkOut.Departamento);
+
+                _Conect.StParameters("ciudad", checkOut.Ciudad);
+
+                _Conect.StParameters("estado", checkOut.Estado);
+
+                _Conect.StParameters("tienemascota", checkOut.TieneMascota);
+
+                _Conect.StParameters("seguromascota", checkOut.TieneSeguro);
+                //LTotalPagado.Text = "";
+
+                _Conect.StParameters("barrio", checkOut.Barrio);
+
+                if (checkOut.FechaNacimiento == "")
+                {
+                    _Conect.StParameters("fechanacimiento", null);
+                }
+                else
+                {
+                    fechatitular = Convert.ToDateTime(checkOut.FechaNacimiento);
+                    _Conect.StParameters("fechanacimiento", fechatitular.ToString("yyyy-MM-dd"));
+                }
+
+                _Conect.StParameters("email", checkOut.Email);
+
+                _Conect.StParameters("detalle", checkOut.Detalle);
+
+                _Conect.StParameters("usuario", checkOut.Usuario);
+
+                _Conect.StParameters("procesado", checkOut.Procesado);
+
+                _Conect.StParameters("POSX", checkOut.POSX);
+
+                _Conect.StParameters("POSY", checkOut.POSY);
+
+
+
+
+                try
+                {
+                    _Conect.ExecuteProcedureBusq();
+                    JavaScriptSerializer json_serializer = new JavaScriptSerializer();
+                    return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Informacion Almacenada Correctamente\" }]"));
+                    //return Json("Informacion Almacenada Correctamente");
+
+
+                }
+                catch (Exception ex)
+                {
+                    //return Json("Error Al Almacenar");
+                    JavaScriptSerializer json_serializer = new JavaScriptSerializer();
+                    return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Error Al Almacenar " + ex + "\" }]"));
                 }
 
 

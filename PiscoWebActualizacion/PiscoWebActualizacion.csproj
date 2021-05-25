@@ -108,6 +108,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ActualizarTitulares.cs" />
+    <Compile Include="Models\Beneficiarios.cs" />
     <Compile Include="Models\CambioClave.cs" />
     <Compile Include="Models\ConfirmarDatos.cs" />
     <Compile Include="Models\Principal.cs" />
@@ -185,7 +186,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2548</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8080/</IISUrl>
+          <IISUrl>http://localhost:8090/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

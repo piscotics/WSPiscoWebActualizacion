@@ -45,11 +45,11 @@ namespace PiscoWebActualizacion.App_Code
 
         }
 
-        public void FbConeccion()
+        public void FbConeccion(string rutaBd)
         {
             _Conect = new FbConnection();
-         _Conect.ConnectionString = "User=SYSDBA;password=masterkey;DataSource=localhost;port=3050;Database="+ HttpContext.Current.Session["RutaBD"].ToString() + ";Charset=NONE;Dialect=3;Max Pool Size=1024;";
-        //    _Conect.ConnectionString = "User=SYSDBA;password=masterkey;DataSource=localhost;port=3050;Database=190.85.119.106:D:\\AdaSysDatos\\FUNERARIAS.FDB;Charset=NONE;Dialect=3;Max Pool Size=1024;";
+        //   _Conect.ConnectionString = "User=SYSDBA;password=masterkey;DataSource=localhost;port=3050;Database="+ HttpContext.Current.Session["RutaBD"].ToString() + ";Charset=NONE;Dialect=3;Max Pool Size=1024;";
+          _Conect.ConnectionString = "User=SYSDBA;password=masterkey;DataSource=localhost;port=3050;Database="+rutaBd+";Charset=NONE;Dialect=3;Max Pool Size=1024;";
         }
 
         public void FbConeccionPrincipal()
