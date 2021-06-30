@@ -16,5 +16,7 @@ namespace PiscoWebActualizacion.Models
         public string Usuariomaster { get; set; }
         public string Cargo { get; set; }
         public string Estado { get; set; }
+        public string RutaBd { get; set; }
+
     }
 }

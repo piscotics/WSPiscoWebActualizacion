@@ -29,5 +29,7 @@ namespace PiscoWebActualizacion.Models
         public string POSX { get; set; }
         public string POSY { get; set; }
         public string Tipo { get; set; }
+        public string RutaBd { get; set; }
+
     }
 }

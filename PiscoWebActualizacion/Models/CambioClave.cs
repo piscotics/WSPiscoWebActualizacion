@@ -9,5 +9,7 @@ namespace PiscoWebActualizacion.Models
     {
         public string Usuario { get; set; }
         public string Clavenueva { get; set; }
+        public string RutaBd { get; set; }
+
     }
 }

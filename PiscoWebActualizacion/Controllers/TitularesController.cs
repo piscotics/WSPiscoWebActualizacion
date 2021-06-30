@@ -42,7 +42,7 @@ namespace PiscoWebActualizacion.Controllers
 
         [HttpGet]
         [Route("GetUbicacion")]
-        public IHttpActionResult GetUbicacion(string dato, string departamento)
+        public IHttpActionResult GetUbicacion(string dato, string departamento, string rutaBd)
         {
             if (dato == "")
             {
@@ -52,7 +52,7 @@ namespace PiscoWebActualizacion.Controllers
             int fila = 0;
             bool encontro = false;
             _Conect = new AdasysConnection();
-            _Conect.FbConeccion("");
+            _Conect.FbConeccion(rutaBd);
             _Conect.StProcedure("P_TITULARESPARAMETROS");
             _Conect.StParameters("dato", dato);
             _Conect.StParameters("departamento", departamento);
@@ -60,7 +60,7 @@ namespace PiscoWebActualizacion.Controllers
 
             _Conect.ExecuteProcedure();
 
-            int cantidad = cantidadUbicacion(dato,  departamento);
+            int cantidad = cantidadUbicacion(dato,  departamento, rutaBd);
             Ubicacion[] objUbicacion = new Ubicacion[cantidad];
 
             while (_Conect.DataReader.Read())
@@ -85,14 +85,14 @@ namespace PiscoWebActualizacion.Controllers
             // return Json(objTitulares);
         }
 
-        private int cantidadUbicacion(string dato, string departamento)
+        private int cantidadUbicacion(string dato, string departamento, string rutaBd)
         {
             int cantidad = 0;
             try
             {
 
                 _ConectUbicacion = new AdasysConnection();
-                _ConectUbicacion.FbConeccion("");
+                _ConectUbicacion.FbConeccion(rutaBd);
                 _ConectUbicacion.StProcedure("P_TITULARESPARAMETROS");
                 _ConectUbicacion.StParameters("dato", dato);
                 _ConectUbicacion.StParameters("departamento", departamento);
@@ -116,14 +116,14 @@ namespace PiscoWebActualizacion.Controllers
             return cantidad;
         }
 
-        private int cantidadUsuarios()
+        private int cantidadUsuarios(string rutaBd)
         {
             int cantidad = 0;
             try
             {
 
                 _ConectUsuario = new AdasysConnection();
-                _ConectUsuario.FbConeccion("");
+                _ConectUsuario.FbConeccion(rutaBd);
                 _ConectUsuario.StProcedure("P_USUARIOSACTUALIZACION");
                 _ConectUsuario.StParameters("usuario", "");
                 _ConectUsuario.StParameters("passwordusuario", "");
@@ -266,10 +266,13 @@ namespace PiscoWebActualizacion.Controllers
 
                 objPrincipal[fila].Ip = _ConectTitular.DataReader["IP"].ToString();
 
-                _ConectTitular.MultiConsulta(objPrincipal[fila].Ip + ":" + objPrincipal[fila].RutaBd);
+                objPrincipal[fila].RutaBdPrincipal = _ConectTitular.DataReader["IP"].ToString() + ":" + _ConectTitular.DataReader["RUTABD"].ToString();
 
-               // HttpContext.Current.Session["RutaBD"] = objPrincipal[fila].Ip + ":" + objPrincipal[fila].RutaBd;
                 
+               // _ConectTitular.MultiConsulta(objPrincipal[fila].Ip + ":" + objPrincipal[fila].RutaBd);
+
+                // HttpContext.Current.Session["RutaBD"] = objPrincipal[fila].Ip + ":" + objPrincipal[fila].RutaBd;
+
                 // _Conect.StrCadena1 = objPrincipal[fila].Ip +":"+ objPrincipal[fila].RutaBd;
 
             }
@@ -374,7 +377,7 @@ namespace PiscoWebActualizacion.Controllers
 
         [HttpGet]
         [Route("GetAllUsuario")]
-        public IHttpActionResult GetAllUsuario()
+        public IHttpActionResult GetAllUsuario(string rutaBd)
         {
            
 
@@ -382,13 +385,13 @@ namespace PiscoWebActualizacion.Controllers
             bool encontro = false;
             DateTime fechatitular;
             _Conect = new AdasysConnection();
-            _Conect.FbConeccion("");
+            _Conect.FbConeccion(rutaBd);
             _Conect.StProcedure("P_USUARIOSACTUALIZACION");
             _Conect.StParameters("usuario", "");
             _Conect.StParameters("passwordusuario", "");
             _Conect.ExecuteProcedure();
 
-            int cantidad = cantidadUsuarios();
+            int cantidad = cantidadUsuarios(rutaBd);
             // , :, :, :, :, :pwdrol, :, :,  :estado
             Usuarios[] objUsuarios = new Usuarios[cantidad];
             while (_Conect.DataReader.Read())
@@ -450,7 +453,7 @@ namespace PiscoWebActualizacion.Controllers
         //trae toda la informacion de las actualiaciones
         [HttpGet]
         [Route("GetAllActualizaciones")]
-        public IHttpActionResult GetAllActuualizaciones(string fechadesde,string fechahasta, string usuarioRegistro , string estadoRegistro, string procesadoRegistro, string POSX, string POSY )
+        public IHttpActionResult GetAllActuualizaciones(string fechadesde,string fechahasta, string usuarioRegistro , string estadoRegistro, string procesadoRegistro, string POSX, string POSY, string rutaBd)
         {
 
 
@@ -461,7 +464,7 @@ namespace PiscoWebActualizacion.Controllers
             DateTime fechatitular;
 
             _ConectRegistros = new AdasysConnection();
-            _ConectRegistros.FbConeccion("");
+            _ConectRegistros.FbConeccion(rutaBd);
             _ConectRegistros.StProcedure("P_REGISTROSACTUALIZACION");
             
             if (fechadesde != null)
@@ -517,7 +520,7 @@ namespace PiscoWebActualizacion.Controllers
             }
             _ConectRegistros.ExecuteProcedure();
 
-            int cantidad = cantidadRegistrosActualizacion( fechadesde,  fechahasta,  usuarioRegistro,  estadoRegistro,  procesadoRegistro, POSX, POSY);
+            int cantidad = cantidadRegistrosActualizacion( fechadesde,  fechahasta,  usuarioRegistro,  estadoRegistro,  procesadoRegistro, POSX, POSY,rutaBd);
 
             Registros[] objRegistros = new Registros[cantidad];
             while (_ConectRegistros.DataReader.Read())
@@ -619,7 +622,7 @@ namespace PiscoWebActualizacion.Controllers
             // return Json(objTitulares);
         }
 
-        private int cantidadRegistrosActualizacion(string fechadesde, string fechahasta, string usuarioRegistro, string estadoRegistro, string procesadoRegistro , string POSX, string POSY)
+        private int cantidadRegistrosActualizacion(string fechadesde, string fechahasta, string usuarioRegistro, string estadoRegistro, string procesadoRegistro , string POSX, string POSY, string rutaBd)
         {
 
             int cantidad = 0;
@@ -632,7 +635,7 @@ namespace PiscoWebActualizacion.Controllers
                 DateTime fechatitular;
 
                 _ConectRegistrosCount = new AdasysConnection();
-                _ConectRegistrosCount.FbConeccion("");
+                _ConectRegistrosCount.FbConeccion(rutaBd);
                 _ConectRegistrosCount.StProcedure("P_REGISTROSACTUALIZACION");
 
                 if (fechadesde != null)
@@ -709,7 +712,7 @@ namespace PiscoWebActualizacion.Controllers
         [HttpPost]
         [ResponseType(typeof(Titulares))]
         [Route("SetTitulares")]
-        public async Task<IHttpActionResult> Post([FromBody] Titulares checkOut)
+        public async Task<IHttpActionResult> Post([FromBody] Titulares checkOut, string RutaBd)
         {
             DateTime fechatitular;
 
@@ -718,7 +721,7 @@ namespace PiscoWebActualizacion.Controllers
 
                 _Conect = new AdasysConnection();
 
-                _Conect.FbConeccion("");
+                _Conect.FbConeccion(RutaBd);
 
                 _Conect.StProcedure("P_TITULARESGUARDAR");
 
@@ -808,7 +811,7 @@ namespace PiscoWebActualizacion.Controllers
         [HttpPost]
         [ResponseType(typeof(CambioClave))]
         [Route("SetCambioClave")]
-        public async Task<IHttpActionResult> SetCambioClave([FromBody] CambioClave checkOut)
+        public async Task<IHttpActionResult> SetCambioClave([FromBody] CambioClave checkOut, string rutaBd)
         {
 
 
@@ -817,7 +820,7 @@ namespace PiscoWebActualizacion.Controllers
 
                 _Conect = new AdasysConnection();
 
-                _Conect.FbConeccion("");
+                _Conect.FbConeccion(rutaBd);
 
                 _Conect.StProcedure("P_ACTUALIZARCAMBICLAVE");
 
@@ -860,7 +863,7 @@ namespace PiscoWebActualizacion.Controllers
         [HttpPost]
         [ResponseType(typeof(Titulares))]
         [Route("SetActualizarDatos")]
-        public async Task<IHttpActionResult> SetActualizarDatos([FromBody] ConfirmarDatos checkOut)
+        public async Task<IHttpActionResult> SetActualizarDatos([FromBody] ConfirmarDatos checkOut, string rutaBd)
         {
             
 
@@ -869,7 +872,7 @@ namespace PiscoWebActualizacion.Controllers
 
                 _Conect = new AdasysConnection();
 
-                _Conect.FbConeccion("");
+                _Conect.FbConeccion(rutaBd);
 
                 _Conect.StProcedure("P_TITULARESACTUALIZAR");
 
@@ -909,7 +912,7 @@ namespace PiscoWebActualizacion.Controllers
         //trae los beneficiarios
         [HttpGet]
         [Route("GetBeneficiarios")]
-        public IHttpActionResult GetBeneficiarios(string cedula, string contrato)
+        public IHttpActionResult GetBeneficiarios(string cedula, string contrato, string rutaBd)
         {
             if (cedula == "")
             {
@@ -920,13 +923,13 @@ namespace PiscoWebActualizacion.Controllers
             bool encontro = false;
             DateTime fechatitular;
             _Conect = new AdasysConnection();
-            _Conect.FbConeccion("");
+            _Conect.FbConeccion(rutaBd);
             _Conect.StProcedure("P_ACTUALIZACIONBENEFICIARIO"); //
             _Conect.StParameters("cedula", cedula);
             _Conect.StParameters("contrato", contrato);
             _Conect.ExecuteProcedure();
 
-            int cantidad = cantidadRegistrosBeneficiarios(cedula, contrato);
+            int cantidad = cantidadRegistrosBeneficiarios(cedula, contrato,rutaBd);
 
             Beneficiarios[] objBeneficiarios = new Beneficiarios[cantidad];
             while (_Conect.DataReader.Read())
@@ -984,7 +987,7 @@ namespace PiscoWebActualizacion.Controllers
             // return Json(objTitulares);
         }
 
-        private int cantidadRegistrosBeneficiarios(string cedula, string contrato)
+        private int cantidadRegistrosBeneficiarios(string cedula, string contrato, string rutaBd)
         {
             int cantidad = 0;
             if (cedula == "")
@@ -995,7 +998,7 @@ namespace PiscoWebActualizacion.Controllers
             {
                
                 _ConectBeneficiarios = new AdasysConnection();
-                _ConectBeneficiarios.FbConeccion("");
+                _ConectBeneficiarios.FbConeccion(rutaBd);
                 _ConectBeneficiarios.StProcedure("P_ACTUALIZACIONBENEFICIARIO"); //
                 _ConectBeneficiarios.StParameters("cedula", cedula);
                 _ConectBeneficiarios.StParameters("contrato", contrato);
@@ -1024,7 +1027,7 @@ namespace PiscoWebActualizacion.Controllers
         [HttpPost]
         [ResponseType(typeof(Beneficiarios))]
         [Route("SetBeneficiarios")]
-        public async Task<IHttpActionResult> Post([FromBody] Beneficiarios checkOut)
+        public async Task<IHttpActionResult> Post([FromBody] Beneficiarios checkOut, string rutaBd)
         {
             DateTime fechatitular;
 
@@ -1033,7 +1036,7 @@ namespace PiscoWebActualizacion.Controllers
 
                 _Conect = new AdasysConnection();
 
-                _Conect.FbConeccion("");
+                _Conect.FbConeccion(rutaBd);
 
                 _Conect.StProcedure("P_BENEFICIARIOSGUARDAR"); //P_TITULARESGUARDAR
 

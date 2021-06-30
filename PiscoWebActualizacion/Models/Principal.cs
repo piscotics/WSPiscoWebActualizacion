@@ -11,5 +11,6 @@ namespace PiscoWebActualizacion.Models
         public string Estado { get; set; }
         public string RutaBd { get; set; }
         public string Ip { get; set; }
+        public string RutaBdPrincipal { get; set; }
     }
 }

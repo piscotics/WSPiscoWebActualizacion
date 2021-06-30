@@ -31,5 +31,7 @@ namespace PiscoWebActualizacion.Models
         public string Fecharegistro { get; set; }
         public string POSX { get; set; }
         public string POSY { get; set; }
+        public string RutaBd { get; set; }
+
     }
 }

@@ -10,5 +10,7 @@ namespace PiscoWebActualizacion.Models
         public string Cedula { get; set; }
         public string Usuario { get; set; }
         public string Procesado { get; set; }
+        public string RutaBd { get; set; }
+
     }
 }
