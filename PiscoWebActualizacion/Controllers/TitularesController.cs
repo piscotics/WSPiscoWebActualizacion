@@ -354,6 +354,8 @@ namespace PiscoWebActualizacion.Controllers
                     objUsuarios[fila].Estado = "0";
                 }
 
+                objUsuarios[fila].Configuracion = _Conect.DataReader["configuracion"].ToString();
+
                 //fila = fila + 1;
             }
             else
@@ -806,6 +808,97 @@ namespace PiscoWebActualizacion.Controllers
             }
         }
 
+        //guarda los aliados comercial
+      
+        [HttpPost]
+        [ResponseType(typeof(Aliados))]
+        [Route("SetAliados")]
+        public async Task<IHttpActionResult> Post([FromBody] Aliados checkOut, string RutaBd)
+        {
+          
+
+            if (checkOut.Cedula != "")
+            {
+
+                _Conect = new AdasysConnection();
+
+                _Conect.FbConeccion(RutaBd);
+
+                _Conect.StProcedure("P_ACTUALIZARALIADOS");
+
+                _Conect.StParameters("idpersona", checkOut.Cedula);
+
+                _Conect.StParameters("nombres", checkOut.Nombre1);
+
+                _Conect.StParameters("nombre2", checkOut.Nombre2);
+
+                _Conect.StParameters("apellidos", checkOut.Apellido1);// usada cuando se ingresa el numero de recibo
+
+                _Conect.StParameters("apellido2", checkOut.Apellido2);
+
+                _Conect.StParameters("telefono", checkOut.Telefono);
+
+                _Conect.StParameters("telefamiliar", checkOut.Telefamiliar);
+
+                _Conect.StParameters("direccion", checkOut.Direccion);
+
+                _Conect.StParameters("departamento", checkOut.Departamento);
+
+                _Conect.StParameters("ciudad", checkOut.Ciudad);
+
+                _Conect.StParameters("barrio", checkOut.Barrio);
+
+                _Conect.StParameters("email", checkOut.Email);
+
+                _Conect.StParameters("procesado", checkOut.Procesado);
+
+                 _Conect.StParameters("POSX", checkOut.POSX);
+
+                _Conect.StParameters("POSY", checkOut.POSY);
+
+                _Conect.StParameters("categoria", checkOut.Categoria); //default participante  1. participante, 2. activo, 3.inactivo   
+
+                //39783458
+                //1. guaradar en la tabla tblactualizacionaliado como procesado 0
+                //2. crear aprovacion de aliados formulario 
+                //3. crear usuario automaticamente trigger
+                //4. 
+                //5. enviar correo de aprovacion con usuario y clave 
+                //6. los aliados solo pueden ver prospecto y un nuevo formulario de consulta de solo la informacion que el registro
+                //7  crear dashboard graficamente mostrando referidos acumulado y mes y me mustre que categoria es 
+
+                //configuracion = 1 pedir cambio de contraseña
+                //tbl 
+
+
+                try
+                {
+                    _Conect.ExecuteProcedureBusq();
+                    JavaScriptSerializer json_serializer = new JavaScriptSerializer();
+                    return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Informacion Almacenada Correctamente\" }]"));
+                    //return Json("Informacion Almacenada Correctamente");
+
+
+                }
+                catch (Exception ex)
+                {
+                    //return Json("Error Al Almacenar");
+                    JavaScriptSerializer json_serializer = new JavaScriptSerializer();
+                    return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Error Al Almacenar " + ex + "\" }]"));
+                }
+
+
+
+            }
+            else
+            {
+                JavaScriptSerializer json_serializer = new JavaScriptSerializer();
+                return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Complete Los Datos Obligatorios\" }]"));
+                //return Json("Complete Los Datos Obligatorios");
+            }
+        }
+
+
 
 
         [HttpPost]
@@ -828,6 +921,7 @@ namespace PiscoWebActualizacion.Controllers
 
                 _Conect.StParameters("Clavenueva", checkOut.Clavenueva);
 
+                
 
 
                 try

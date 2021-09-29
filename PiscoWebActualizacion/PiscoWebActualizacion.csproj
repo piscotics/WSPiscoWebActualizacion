@@ -108,6 +108,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ActualizarTitulares.cs" />
+    <Compile Include="Models\Aliados.cs" />
     <Compile Include="Models\Beneficiarios.cs" />
     <Compile Include="Models\CambioClave.cs" />
     <Compile Include="Models\ConfirmarDatos.cs" />

@@ -31,13 +31,13 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>03/08/2014 20:33:56</publishTime>
     </File>
     <File Include="bin/PiscoWebActualizacion.dll">
-      <publishTime>05/26/2021 22:28:36</publishTime>
+      <publishTime>09/28/2021 23:06:14</publishTime>
     </File>
     <File Include="bin/PiscoWebActualizacion.pdb">
-      <publishTime>05/26/2021 22:28:36</publishTime>
+      <publishTime>09/28/2021 23:06:14</publishTime>
     </File>
     <File Include="bin/PiscoWebActualizacion.XmlSerializers.dll">
-      <publishTime>05/26/2021 22:28:55</publishTime>
+      <publishTime>09/28/2021 23:06:17</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>06/27/2016 14:50:24</publishTime>
