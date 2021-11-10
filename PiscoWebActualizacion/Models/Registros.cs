@@ -21,6 +21,8 @@ namespace PiscoWebActualizacion.Models
         public string Estado { get; set; }
         public string Tienemascota { get; set; }
         public string Seguromascota { get; set; }
+        public string TienePlanExequial { get; set; }
+        public string EntidadPlanExequial { get; set; }
         public string Barrio { get; set; }
         public string Fechanacimiento { get; set; }
         public string Email { get; set; }

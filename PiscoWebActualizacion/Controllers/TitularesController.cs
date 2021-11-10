@@ -568,6 +568,19 @@ namespace PiscoWebActualizacion.Controllers
                     objRegistros[fila].Seguromascota = "No";
                 }
 
+                string TienePlanExequial = _ConectRegistros.DataReader["TienePlanExequial"].ToString();
+                if (TienePlanExequial == "1")
+                {
+                    objRegistros[fila].TienePlanExequial = "Si";
+                }
+                else
+                {
+                    objRegistros[fila].TienePlanExequial = "No";
+                }
+
+                objRegistros[fila].EntidadPlanExequial = _ConectRegistros.DataReader["EntidadPlanExequial"].ToString();
+
+
                 objRegistros[fila].Barrio = _ConectRegistros.DataReader["barrio"].ToString();
 
                 string fechanacimiento = _ConectRegistros.DataReader["fechanacimiento"].ToString();
@@ -752,6 +765,10 @@ namespace PiscoWebActualizacion.Controllers
                 _Conect.StParameters("tienemascota", checkOut.TieneMascota);
 
                 _Conect.StParameters("seguromascota", checkOut.TieneSeguro);
+
+                _Conect.StParameters("TIENEPLANEXEQUIAL", checkOut.TienePlanExequial);
+
+                _Conect.StParameters("ENTIDADPLANEXEQUIAL", checkOut.EntidadPlanExequial);
                 //LTotalPagado.Text = "";
 
                 _Conect.StParameters("barrio", checkOut.Barrio);
