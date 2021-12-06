@@ -11,6 +11,7 @@ namespace PiscoWebActualizacion.App_Code
     {
         private FbCommand _Comand;
         private FbDataReader _DataReader;
+        
         private FbConnection _Conect;
         private FbConnection _ConectPrincipal;
         private string StrCadena;
@@ -48,15 +49,20 @@ namespace PiscoWebActualizacion.App_Code
         public void FbConeccion(string rutaBd)
         {
             _Conect = new FbConnection();
-        //   _Conect.ConnectionString = "User=SYSDBA;password=masterkey;DataSource=localhost;port=3050;Database="+ HttpContext.Current.Session["RutaBD"].ToString() + ";Charset=NONE;Dialect=3;Max Pool Size=1024;";
-          _Conect.ConnectionString = "User=SYSDBA;password=masterkey;DataSource=localhost;Database="+rutaBd+";Charset=NONE;Dialect=3;Max Pool Size=1024;";
+            string conection = "User=SYSDBA;password=masterkey;DataSource=localhost;pooling=false;Database=" + rutaBd + ";Charset=NONE;Dialect=3;Max Pool Size=1024;";
+            //   _Conect.ConnectionString = "User=SYSDBA;password=masterkey;DataSource=localhost;port=3050;Database="+ HttpContext.Current.Session["RutaBD"].ToString() + ";Charset=NONE;Dialect=3;Max Pool Size=1024;";
+            _Conect.ConnectionString = conection;
+           
+
         }
 
         public void FbConeccionPrincipal()
         {
             _Conect = new FbConnection();
             // _Conect.ConnectionString = "User=SYSDBA;password=masterkey;DataSource=localhost;Database=BDCrmPtics;Charset=NONE;Dialect=3;Max Pool Size=1024;";
-            _Conect.ConnectionString = "User=SYSDBA;password=masterkey;DataSource=localhost;port=3050;Database=181.129.170.198:BDCrmPtics;Charset=NONE;Dialect=3;Max Pool Size=1024;";
+            _Conect.ConnectionString = "User=SYSDBA;password=masterkey;DataSource=localhost;pooling=false;port=3050;Database=181.129.170.198:BDCrmPtics;Charset=NONE;Dialect=3;Max Pool Size=1024;";
+            FbConnection.ClearPool(_Conect);
+            FbConnection.ClearAllPools();
         }
 
         public void FbCierraConectUpdate()
@@ -85,6 +91,7 @@ namespace PiscoWebActualizacion.App_Code
         {
             _Conect.Close();
             _DataReader.Close();
+            _Conect.Dispose();
         }
 
         public void StParameters(string parameter, string values)
@@ -136,6 +143,9 @@ namespace PiscoWebActualizacion.App_Code
         {
             _Comand.ExecuteNonQuery();
             _Conect.Close();
+            _Conect.Dispose();
+          //  FbConnection.ClearPool(_Conect);
+            FbConnection.ClearAllPools();
 
         }
     }

@@ -28,16 +28,16 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>08/15/2017 13:12:32</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
-      <publishTime>08/03/2014 20:33:56</publishTime>
+      <publishTime>03/08/2014 20:33:56</publishTime>
     </File>
     <File Include="bin/PiscoWebActualizacion.dll">
-      <publishTime>11/08/2021 23:54:26</publishTime>
+      <publishTime>11/18/2021 22:02:21</publishTime>
     </File>
     <File Include="bin/PiscoWebActualizacion.pdb">
-      <publishTime>11/08/2021 23:54:26</publishTime>
+      <publishTime>11/18/2021 22:02:21</publishTime>
     </File>
     <File Include="bin/PiscoWebActualizacion.XmlSerializers.dll">
-      <publishTime>11/08/2021 23:54:35</publishTime>
+      <publishTime>11/18/2021 22:02:22</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>06/27/2016 14:50:24</publishTime>
@@ -139,7 +139,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>02/04/2021 14:59:54</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/08/2021 23:54:50</publishTime>
+      <publishTime>08/11/2021 23:54:50</publishTime>
     </File>
   </ItemGroup>
 </Project>

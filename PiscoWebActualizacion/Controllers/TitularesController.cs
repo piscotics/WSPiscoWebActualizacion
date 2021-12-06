@@ -73,11 +73,12 @@ namespace PiscoWebActualizacion.Controllers
            
             if (encontro == true)
             {
+                _Conect.FbCierraConect();
                 return Json(objUbicacion);
             }
             else
             {
-
+                _Conect.FbCierraConect();
                 JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                 return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Sin Datos\" }]"));
 
@@ -110,9 +111,10 @@ namespace PiscoWebActualizacion.Controllers
             }
             catch (Exception e)
             {
-                _ConectUbicacion.Conect.Close();
+                _ConectUbicacion.FbCierraConect();
                 string x = e.ToString();
             }
+            _ConectUbicacion.FbCierraConect();
             return cantidad;
         }
 
@@ -141,9 +143,10 @@ namespace PiscoWebActualizacion.Controllers
             }
             catch (Exception e)
             {
-                _ConectUsuario.Conect.Close();
+                _ConectUsuario.FbCierraConect();
                 string x = e.ToString();
             }
+            _ConectUsuario.FbCierraConect();
             return cantidad;
         }
 
@@ -212,11 +215,12 @@ namespace PiscoWebActualizacion.Controllers
             }
             if (encontro == true)
             {
+                _Conect.FbCierraConect();
                 return Json(objTitulares);
             }
             else
             {
-              
+                _Conect.FbCierraConect();
                 JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                 return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Sin Datos\" }]"));
                
@@ -282,10 +286,12 @@ namespace PiscoWebActualizacion.Controllers
             }
             if (encontro == true)
             {
+                _ConectTitular.FbCierraConect();
                 return Json(objPrincipal);
             }
             else
             {
+                _ConectTitular.FbCierraConect();
 
                 JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                 return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Sin Datos\" }]"));
@@ -364,11 +370,12 @@ namespace PiscoWebActualizacion.Controllers
             }
             if (encontro == true)
             {
+                _Conect.FbCierraConect();
                 return Json(objUsuarios);
             }
             else
             {
-
+                _Conect.FbCierraConect();
                 JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                 return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Sin Datos\" }]"));
 
@@ -439,11 +446,12 @@ namespace PiscoWebActualizacion.Controllers
             
             if (encontro == true)
             {
+                _Conect.FbCierraConect();
                 return Json(objUsuarios);
             }
             else
             {
-
+                _Conect.FbCierraConect();
                 JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                 return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Sin Datos\" }]"));
 
@@ -625,11 +633,12 @@ namespace PiscoWebActualizacion.Controllers
             
             if (encontro == true)
             {
+                _ConectRegistros.FbCierraConect();
                 return Json(objRegistros);
             }
             else
             {
-
+                _ConectRegistros.FbCierraConect();
                 JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                 return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Sin Datos\" }]"));
 
@@ -716,9 +725,10 @@ namespace PiscoWebActualizacion.Controllers
             }
             catch (Exception e)
             {
-                _ConectRegistrosCount.Conect.Close();
+                _ConectRegistrosCount.FbCierraConect();
                 string x = e.ToString();
             }
+            _ConectRegistrosCount.FbCierraConect();
             return cantidad;
         }
 
@@ -740,21 +750,21 @@ namespace PiscoWebActualizacion.Controllers
 
                 _Conect.StProcedure("P_TITULARESGUARDAR");
 
-                _Conect.StParameters("idpersona", checkOut.Cedula);
+                _Conect.StParameters("idpersona", checkOut.Cedula.Trim());
 
-                _Conect.StParameters("nombres", checkOut.Nombre1);
+                _Conect.StParameters("nombres", checkOut.Nombre1.Trim());
 
-                _Conect.StParameters("nombre2", checkOut.Nombre2);
+                _Conect.StParameters("nombre2", checkOut.Nombre2.Trim());
 
-                _Conect.StParameters("apellidos", checkOut.Apellido1);// usada cuando se ingresa el numero de recibo
+                _Conect.StParameters("apellidos", checkOut.Apellido1.Trim());// usada cuando se ingresa el numero de recibo
 
-                _Conect.StParameters("apellido2", checkOut.Apellido2);
+                _Conect.StParameters("apellido2", checkOut.Apellido2.Trim());
 
                 _Conect.StParameters("telefono", checkOut.Telefono);
 
                 _Conect.StParameters("telefamiliar", checkOut.Telefamiliar);
 
-                _Conect.StParameters("direccion", checkOut.Direccion);
+                _Conect.StParameters("direccion", checkOut.Direccion.Trim());
 
                 _Conect.StParameters("departamento", checkOut.Departamento);
 
@@ -771,7 +781,7 @@ namespace PiscoWebActualizacion.Controllers
                 _Conect.StParameters("ENTIDADPLANEXEQUIAL", checkOut.EntidadPlanExequial);
                 //LTotalPagado.Text = "";
 
-                _Conect.StParameters("barrio", checkOut.Barrio);
+                _Conect.StParameters("barrio", checkOut.Barrio.Trim());
 
                 if (checkOut.FechaNacimiento == "")
                 {
@@ -801,6 +811,7 @@ namespace PiscoWebActualizacion.Controllers
                 try
                 {
                     _Conect.ExecuteProcedureBusq();
+                   // _Conect.FbCierraConect();
                     JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                     return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Informacion Almacenada Correctamente\" }]"));
                     //return Json("Informacion Almacenada Correctamente");
@@ -809,6 +820,7 @@ namespace PiscoWebActualizacion.Controllers
                 }
                 catch (Exception ex)
                 {
+                    _Conect.FbCierraConect();
                     //return Json("Error Al Almacenar");
                     JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                     return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Error Al Almacenar "+ ex + "\" }]"));
@@ -819,6 +831,7 @@ namespace PiscoWebActualizacion.Controllers
             }
             else
             {
+               
                 JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                 return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Complete Los Datos Obligatorios\" }]"));
                 //return Json("Complete Los Datos Obligatorios");
@@ -843,27 +856,27 @@ namespace PiscoWebActualizacion.Controllers
 
                 _Conect.StProcedure("P_ACTUALIZARALIADOS");
 
-                _Conect.StParameters("idpersona", checkOut.Cedula);
+                _Conect.StParameters("idpersona", checkOut.Cedula.Trim());
 
-                _Conect.StParameters("nombres", checkOut.Nombre1);
+                _Conect.StParameters("nombres", checkOut.Nombre1.Trim());
 
-                _Conect.StParameters("nombre2", checkOut.Nombre2);
+                _Conect.StParameters("nombre2", checkOut.Nombre2.Trim());
 
-                _Conect.StParameters("apellidos", checkOut.Apellido1);// usada cuando se ingresa el numero de recibo
+                _Conect.StParameters("apellidos", checkOut.Apellido1.Trim());// usada cuando se ingresa el numero de recibo
 
-                _Conect.StParameters("apellido2", checkOut.Apellido2);
+                _Conect.StParameters("apellido2", checkOut.Apellido2.Trim());
 
                 _Conect.StParameters("telefono", checkOut.Telefono);
 
                 _Conect.StParameters("telefamiliar", checkOut.Telefamiliar);
 
-                _Conect.StParameters("direccion", checkOut.Direccion);
+                _Conect.StParameters("direccion", checkOut.Direccion.Trim());
 
                 _Conect.StParameters("departamento", checkOut.Departamento);
 
                 _Conect.StParameters("ciudad", checkOut.Ciudad);
 
-                _Conect.StParameters("barrio", checkOut.Barrio);
+                _Conect.StParameters("barrio", checkOut.Barrio.Trim());
 
                 _Conect.StParameters("email", checkOut.Email);
 
@@ -891,6 +904,7 @@ namespace PiscoWebActualizacion.Controllers
                 try
                 {
                     _Conect.ExecuteProcedureBusq();
+                   // _Conect.FbCierraConect();
                     JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                     return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Informacion Almacenada Correctamente\" }]"));
                     //return Json("Informacion Almacenada Correctamente");
@@ -900,6 +914,7 @@ namespace PiscoWebActualizacion.Controllers
                 catch (Exception ex)
                 {
                     //return Json("Error Al Almacenar");
+                    _Conect.FbCierraConect();
                     JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                     return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Error Al Almacenar " + ex + "\" }]"));
                 }
@@ -944,6 +959,7 @@ namespace PiscoWebActualizacion.Controllers
                 try
                 {
                     _Conect.ExecuteProcedureBusq();
+                 //   _Conect.FbCierraConect();
                     JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                     return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Clave Actualizada Correctamente\" }]"));
                     //return Json("Informacion Almacenada Correctamente");
@@ -953,6 +969,7 @@ namespace PiscoWebActualizacion.Controllers
                 catch (Exception ex)
                 {
                     //return Json("Error Al Almacenar");
+                    _Conect.FbCierraConect();
                     JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                     return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Error Al Actualizar La Clave" + ex + "\" }]"));
                 }
@@ -996,6 +1013,7 @@ namespace PiscoWebActualizacion.Controllers
                 try
                 {
                     _Conect.ExecuteProcedureBusq();
+                  //  _Conect.FbCierraConect();
                     JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                     return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Informacion Actualizada Correctamente\" }]"));
                     //return Json("Informacion Almacenada Correctamente");
@@ -1005,6 +1023,7 @@ namespace PiscoWebActualizacion.Controllers
                 catch (Exception ex)
                 {
                     //return Json("Error Al Almacenar");
+                    _Conect.FbCierraConect();
                     JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                     return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Error Al Actualizar " + ex + "\" }]"));
                 }
@@ -1086,11 +1105,12 @@ namespace PiscoWebActualizacion.Controllers
            
             if (encontro == true)
             {
+                _Conect.FbCierraConect();
                 return Json(objBeneficiarios);
             }
             else
             {
-
+                _Conect.FbCierraConect();
                 JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                 return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Sin Datos\" }]"));
 
@@ -1124,9 +1144,11 @@ namespace PiscoWebActualizacion.Controllers
             }
             catch (Exception e)
             {
-                _ConectBeneficiarios.Conect.Close();
+                _ConectBeneficiarios.FbCierraConect();
+               
                 string x = e.ToString();
             }
+            _ConectBeneficiarios.FbCierraConect();
             return cantidad;
 
 
@@ -1151,15 +1173,15 @@ namespace PiscoWebActualizacion.Controllers
 
                 _Conect.StProcedure("P_BENEFICIARIOSGUARDAR"); //P_TITULARESGUARDAR
 
-                _Conect.StParameters("idpersona", checkOut.Cedula);
+                _Conect.StParameters("idpersona", checkOut.Cedula.Trim());
 
-                _Conect.StParameters("nombres", checkOut.Nombre1);
+                _Conect.StParameters("nombres", checkOut.Nombre1.Trim());
 
-                _Conect.StParameters("nombre2", checkOut.Nombre2);
+                _Conect.StParameters("nombre2", checkOut.Nombre2.Trim());
 
-                _Conect.StParameters("apellidos", checkOut.Apellido1);// usada cuando se ingresa el numero de recibo
+                _Conect.StParameters("apellidos", checkOut.Apellido1.Trim());// usada cuando se ingresa el numero de recibo
 
-                _Conect.StParameters("apellido2", checkOut.Apellido2);
+                _Conect.StParameters("apellido2", checkOut.Apellido2.Trim());
 
                 _Conect.StParameters("telefono", checkOut.Telefono);
 
@@ -1208,6 +1230,7 @@ namespace PiscoWebActualizacion.Controllers
                 try
                 {
                     _Conect.ExecuteProcedureBusq();
+                  //  _Conect.FbCierraConect();
                     JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                     return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Informacion Almacenada Correctamente\" }]"));
                     //return Json("Informacion Almacenada Correctamente");
@@ -1216,6 +1239,7 @@ namespace PiscoWebActualizacion.Controllers
                 }
                 catch (Exception ex)
                 {
+                    _Conect.FbCierraConect();
                     //return Json("Error Al Almacenar");
                     JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                     return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Error Al Almacenar " + ex + "\" }]"));
@@ -1260,6 +1284,7 @@ namespace PiscoWebActualizacion.Controllers
                 }
                 catch (Exception ex)
                 {
+
                     //return Json("Error Al Almacenar");
                     JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                     return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Error Al Actualizar " + ex + "\" }]"));
