@@ -113,9 +113,11 @@
     <Compile Include="Models\Beneficiarios.cs" />
     <Compile Include="Models\CambioClave.cs" />
     <Compile Include="Models\ConfirmarDatos.cs" />
+    <Compile Include="Models\Impulsador.cs" />
     <Compile Include="Models\Principal.cs" />
     <Compile Include="Models\Registros.cs" />
     <Compile Include="Models\EnviarSms.cs" />
+    <Compile Include="Models\TipoComercio.cs" />
     <Compile Include="Models\Titulares.cs" />
     <Compile Include="Models\Ubicacion.cs" />
     <Compile Include="Models\Usuarios.cs" />

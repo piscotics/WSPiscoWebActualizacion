@@ -32,12 +32,144 @@ namespace PiscoWebActualizacion.Controllers
         AdasysConnection _ConectRegistros;
         AdasysConnection _ConectRegistrosCount;
         AdasysConnection _ConectTitular;
-
-
+        AdasysConnection _ConectImpulsadores;
+        AdasysConnection _ConectTipoComercio;
+        AdasysConnection _ConectImpulsa;
+        AdasysConnection _ConectTComercio;
 
         public IHttpActionResult  EchoPing()
         {
             return Ok(true);
+        }
+
+        [HttpGet]
+        [Route("GetTipoComercio")]
+        public IHttpActionResult GetTipoComercio( string rutaBd)
+        {
+            if (rutaBd == "")
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+
+            int fila = 0;
+            bool encontro = false;
+            _ConectTComercio = new AdasysConnection();
+            _ConectTComercio.FbConeccion(rutaBd);
+            _ConectTComercio.StProcedure("P_ACTUALIZACIONTCOMERCIO");
+            _ConectTComercio.ExecuteProcedure();
+
+            int cantidad = cantidadTipoComercio(rutaBd);
+            TipoComercio[] objTipoComercio = new TipoComercio[cantidad];
+
+            while (_ConectTComercio.DataReader.Read())
+            {
+                encontro = true;
+                objTipoComercio[fila] = new TipoComercio();
+                objTipoComercio[fila].Dato = _ConectTComercio.DataReader["TIPOCOMERCIO"].ToString();
+                fila = fila + 1;
+            }
+
+            if (encontro == true)
+            {
+                _ConectTComercio.FbCierraConect();
+                return Json(objTipoComercio);
+            }
+            else
+            {
+                _ConectTComercio.FbCierraConect();
+                JavaScriptSerializer json_serializer = new JavaScriptSerializer();
+                return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Sin Datos\" }]"));
+
+            }
+            // return Json(objTitulares);
+        }
+
+        private int cantidadTipoComercio(string rutaBd)
+        {
+            int cantidad = 0;
+            try
+            {
+                _ConectTipoComercio = new AdasysConnection();
+                _ConectTipoComercio.FbConeccion(rutaBd);
+                _ConectTipoComercio.StProcedure("P_ACTUALIZACIONTCOMERCIO");
+                _ConectTipoComercio.ExecuteProcedure();
+                while (_ConectTipoComercio.DataReader.Read())
+                {
+                    cantidad = cantidad + 1;
+                }
+            }
+            catch (Exception e)
+            {
+                _ConectTipoComercio.FbCierraConect();
+                string x = e.ToString();
+            }
+            _ConectTipoComercio.FbCierraConect();
+            return cantidad;
+        }
+
+        [HttpGet]
+        [Route("GetImpulsadores")]
+        public IHttpActionResult GetImpulsadores(string rutaBd)
+        {
+            if (rutaBd == "")
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+
+            int fila = 0;
+            bool encontro = false;
+            _ConectImpulsa = new AdasysConnection();
+            _ConectImpulsa.FbConeccion(rutaBd);
+            _ConectImpulsa.StProcedure("P_ACTUALIZACIONIMPULSADOR");
+            _ConectImpulsa.ExecuteProcedure();
+
+            int cantidad = cantidadImpulsadores( rutaBd);
+            Impulsador[] objImpulsador = new Impulsador[cantidad];
+
+            while (_ConectImpulsa.DataReader.Read())
+            {
+                encontro = true;
+                objImpulsador[fila] = new Impulsador();
+                objImpulsador[fila].Dato = _ConectImpulsa.DataReader["NOMBRES"].ToString() + " " + _ConectImpulsa.DataReader["APELLIDOS"].ToString();
+                fila = fila + 1;
+            }
+
+            if (encontro == true)
+            {
+                _ConectImpulsa.FbCierraConect();
+                return Json(objImpulsador);
+            }
+            else
+            {
+                _ConectImpulsa.FbCierraConect();
+                JavaScriptSerializer json_serializer = new JavaScriptSerializer();
+                return Json(json_serializer.DeserializeObject("[{ \"Estado\":\"Sin Datos\" }]"));
+
+            }
+            // return Json(objTitulares);
+        }
+
+        private int cantidadImpulsadores(string rutaBd)
+        {
+            int cantidad = 0;
+            try
+            {
+                _ConectImpulsadores = new AdasysConnection();
+                _ConectImpulsadores.FbConeccion(rutaBd);
+                _ConectImpulsadores.StProcedure("P_ACTUALIZACIONIMPULSADOR");
+                _ConectImpulsadores.ExecuteProcedure();
+                while (_ConectImpulsadores.DataReader.Read())
+                {
+                    cantidad = cantidad + 1;
+                }
+            }
+            catch (Exception e)
+            {
+                _ConectImpulsadores.FbCierraConect();
+                string x = e.ToString();
+            }
+            _ConectImpulsadores.FbCierraConect();
+            return cantidad;
         }
 
         [HttpGet]
@@ -886,7 +1018,11 @@ namespace PiscoWebActualizacion.Controllers
 
                 _Conect.StParameters("POSY", checkOut.POSY);
 
-                _Conect.StParameters("categoria", checkOut.Categoria); //default participante  1. participante, 2. activo, 3.inactivo   
+                _Conect.StParameters("categoria", checkOut.Categoria); //default participante  1. participante, 2. activo, 3.inactivo  
+                
+                _Conect.StParameters("impulsador", checkOut.Impulsador); 
+                 
+                _Conect.StParameters("tipocomercio", checkOut.TipoComercio); //default participante  1. participante, 2. activo, 3.inactivo   
 
                 //39783458
                 //1. guaradar en la tabla tblactualizacionaliado como procesado 0
